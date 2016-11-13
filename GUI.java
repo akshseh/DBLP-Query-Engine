@@ -122,13 +122,6 @@ class FontFrame extends JFrame
    {
       public void actionPerformed(ActionEvent event)
       {
-         String fontFace = (String) queryChoice.getSelectedItem();
-         int fontStyle = (sortByRelevance.isSelected() ? Font.BOLD : 0)
-               + (sortByYear.isSelected() ? Font.ITALIC : 0);
-      //   int fontSize = Integer.parseInt((String) searchBy.getSelectedItem());
-       //  Font font = new Font(fontFace, fontStyle);
-        // sample.setFont(font);
-         sample.repaint();
       }
    }
 }
