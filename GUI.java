@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
@@ -46,12 +48,14 @@ class DBLP_GUI extends JFrame
    	private JTextArea customRangeTo;
    	private JTextArea customRangeFrom;
    	private JButton search;
-   	private JButton reset;
+	private JButton next;
+	private JButton reset;
+	private JTable jt;
    	
    public DBLP_GUI()
    {
       setTitle("GUI");
-      setSize(700, 500);
+      setSize(900, 510);
 
       ActionListener listener = new DblpAction();
       // components
@@ -61,18 +65,16 @@ class DBLP_GUI extends JFrame
 
       JLabel searchLabel = new JLabel("Search By: ");
       searchBy = new JComboBox(new String[] { "search by","By relevance","By date"});
-      searchBy.addActionListener(listener);
+     // searchBy.addActionListener(listener);
       JLabel nameTitleTagsLabel = new JLabel("Name/Title Tags: ");
       JLabel sinceYearLabel = new JLabel("Since Year: ");
       JLabel rangeLabel = new JLabel("Custom Range: ");
       customRangeFrom = new JTextArea();
       customRangeTo = new JTextArea();
-      
       customRangeTo.setEditable(true);
       customRangeTo.setText("YYYY");
       customRangeFrom.setText("YYYY");
       customRangeFrom.setEditable(true);
-      
       //customRange.addActionListener();
       sinceYear = new JTextArea();
       sinceYear.setEditable(true);
@@ -80,25 +82,38 @@ class DBLP_GUI extends JFrame
      // sinceYear.addActionListener();
       sortByRelevance = new JCheckBox("Sort By Relevance");
     //  sortByRelevance.addActionListener(listener);
-
       sortByYear = new JCheckBox("Sort By Year");
      // sortByYear.addActionListener(listener);
       nameTitleTags = new JTextArea();
-      queryResults = new JTextArea();
-      queryResults.setText("No queries to be displayed ! ");
-      queryResults.setEditable(false);
-      queryResults.setLineWrap(true);
-      queryResults.setBorder(BorderFactory.createEtchedBorder());
+      String data[][]={ {"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},
+    		  {"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},
+    		  {"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},
+    		  {"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""},{"","","","","","","",""}};  
+      String column[]={"S.No","Author","Title","Pages","Year","Volume","Journal/BookTitle","URL"};  
+      jt=new JTable(data,column);  
+      jt.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+      jt.setRowHeight(21);
+      jt.getColumnModel().getColumn(0).setPreferredWidth(40);
+      jt.getColumnModel().getColumn(1).setPreferredWidth(150);
+      jt.getColumnModel().getColumn(2).setPreferredWidth(170);
+      jt.getColumnModel().getColumn(3).setPreferredWidth(90);
+      jt.getColumnModel().getColumn(4).setPreferredWidth(90);
+      jt.getColumnModel().getColumn(5).setPreferredWidth(70);
+      jt.getColumnModel().getColumn(6).setPreferredWidth(150);
+      jt.getColumnModel().getColumn(7).setPreferredWidth(180);
       
-      pane = new JScrollPane(queryResults);
+      queryResults = new JTextArea();
+      pane = new JScrollPane(jt);
+      pane.setBorder(BorderFactory.createEtchedBorder());
       search = new JButton("Search");
       //search.addActionListener();
       reset = new JButton("reset");
+      next = new JButton("next");
       //reset.addActionListener();
-      GroupLayout layout = new GroupLayout(getContentPane());
-      setLayout(layout);
-      
+      GroupLayout layout = new GroupLayout(getContentPane());setLayout(layout);
       layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+              .addGroup(layout.createSequentialGroup().addContainerGap()
+              		.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup().addContainerGap()
             		.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             				.addGroup(GroupLayout.Alignment.TRAILING,layout.createSequentialGroup()
@@ -109,34 +124,32 @@ class DBLP_GUI extends JFrame
             								.addComponent(sinceYearLabel)
             								.addComponent(rangeLabel)
             								.addComponent(search)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup((layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                           	.addComponent(searchBy)
                                             .addComponent(queryChoice)
                                             .addComponent(nameTitleTags)
                                             .addComponent(sinceYear)
-                                            .addComponent(customRangeTo)
-                                            .addComponent(customRangeFrom))
-                                            //.addComponent(customRangeTo)
+                                            .addGroup(layout.createSequentialGroup().addContainerGap()
+                                                    .addComponent(customRangeTo).addGap(8)
+                                                    .addComponent(customRangeFrom))
                                             .addComponent(reset)
                                             ).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    //.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                      //    	.addComponent(customRangeFrom)
-                                        //  	)
-                                     )
+                                      )
             				.addComponent(sortByYear)
             				.addComponent(sortByRelevance)
-            				//.addGap(200)
             				).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-            		.addComponent(pane).addContainerGap()
-            		)
+            				.addComponent(pane)
+            				.addComponent(next)
+            				.addContainerGap()
+            		)))
             );
 
       layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] { queryChoice ,searchBy });
-      
       layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup().addContainerGap()
             		.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             				.addComponent(pane, GroupLayout.Alignment.TRAILING)
+            				.addComponent(next, GroupLayout.Alignment.TRAILING)
             				.addGroup(layout.createSequentialGroup()
             						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                           .addComponent(queryChoice)
@@ -159,12 +172,8 @@ class DBLP_GUI extends JFrame
                                     .addComponent(sortByRelevance, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createParallelGroup(Alignment.BASELINE)
                                     		.addComponent(search)
-                                    		.addComponent(reset)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                   .addGap(200)
-                                    ))
-                        .addContainerGap()
-                        )
-            );
+                                    		.addComponent(reset)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGap(220))).addContainerGap()
+                        ));
    }
  
   private class DblpAction implements ActionListener
