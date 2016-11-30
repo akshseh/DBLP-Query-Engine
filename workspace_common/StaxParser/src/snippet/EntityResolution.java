@@ -10,16 +10,21 @@ import java.io.File;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class EntityResolution {
+interface SAXHandlerFactoryInterface {
+	public void makeSAXParser();
+}
+
+class SAXHandlerFactory implements SAXHandlerFactoryInterface {
 	
-	public Map<String, Author> ourMainMap;
+	DefaultHandler handler;
 	
-	public EntityResolution()
+	public SAXHandlerFactory(DefaultHandler handler)
 	{
-		this.ourMainMap = new HashMap<String, Author>();
+		this.handler = handler;
 	}
 	
-	public void makeSAXParser(DefaultHandler handler)
+	@Override
+	public void makeSAXParser()
 	{
 		try
 		{
@@ -32,26 +37,30 @@ public class EntityResolution {
 		catch (FileNotFoundException e) {e.printStackTrace();}
 		catch (Exception e) {e.printStackTrace(); }
 	}
+}
+
+public class EntityResolution {
+	
+	public Map<String, Author> ourMainMap;
+	
+	public EntityResolution()
+	{
+		this.ourMainMap = new HashMap<String, Author>();
+	}
+	
 	
 	public void parseWWW()
 	{
 		DefaultHandler handler = new UserHandlerWWW(this.ourMainMap);
-		this.makeSAXParser(handler);
+		SAXHandlerFactory factory = new SAXHandlerFactory(handler);
+		factory.makeSAXParser();
 	}
 	
-	public Set<Author> parseAllAuthors(int k)
+	public void parseAllAuthors()
 	{
 		DefaultHandler handler = new UserHandlerAuthors(this.ourMainMap);
-		this.makeSAXParser(handler);
-		Set<Author> KAuthors = new TreeSet<Author>();
-		for(Map.Entry<String, Author> entry : this.ourMainMap.entrySet())
-		{
-			if(entry.getValue().getNumOfPublications() > k)
-			{
-				KAuthors.add(entry.getValue());
-			}
-		}
-		return KAuthors;
+		SAXHandlerFactory factory = new SAXHandlerFactory(handler);
+		factory.makeSAXParser();
 	}
 	
 	public List<Publication> parsePublicationByAuthor(String queryAuthorName)
@@ -59,17 +68,23 @@ public class EntityResolution {
 		List<Publication> publicationsFound = new ArrayList<Publication>();
 		Author queryAuthor = this.ourMainMap.get(queryAuthorName);
 		DefaultHandler handler = new UserHandlerAuthorPublication(queryAuthor, publicationsFound);
-		this.makeSAXParser(handler);
+		SAXHandlerFactory factory = new SAXHandlerFactory(handler);
+		factory.makeSAXParser();
 		return publicationsFound;
 	}
 	
-	public Map<Integer, List<Publication> > parsePublicationByTitle(String queryTitle)
+	public Map<Integer, List<Publication> > parsePublicationByTitle(List<String> listTitle)
 	{
-		Map<Integer, List<Publication> > publMap = new HashMap<Integer, List<Publication> >(); 
-		String[] arrayString = queryTitle.split(" ");
-		List<String > listTitle = Arrays.asList(arrayString);
+		Map<Integer, List<Publication> > publMap = new TreeMap<Integer, List<Publication> >(new Comparator<Integer>()
+				{
+					public int compare(Integer a, Integer b)
+					{
+						return b.compareTo(a);
+					}
+				}); 
 		DefaultHandler handler = new UserHandlerTitlePublication(listTitle, this.ourMainMap, publMap);
-		this.makeSAXParser(handler);
+		SAXHandlerFactory factory = new SAXHandlerFactory(handler);
+		factory.makeSAXParser();
 		return publMap;
 	}
 	
@@ -190,7 +205,7 @@ class UserHandlerAuthorPublication extends DefaultHandler {
 		if(qname.equalsIgnoreCase("pages") && bPubl) bPages = true;
 		if(qname.equalsIgnoreCase("year") && bPubl) bYear = true;
 		if(qname.equalsIgnoreCase("volume") && bPubl) bVolume = true;
-		if(qname.equalsIgnoreCase("journal") && bPubl) bJournal = true;
+		if((qname.equalsIgnoreCase("journal") | qname.equalsIgnoreCase("booktitle")) && bPubl) bJournal = true;
 		if(qname.equalsIgnoreCase("url") && bPubl) bUrl = true;	
 	}
 	 
@@ -293,7 +308,7 @@ class UserHandlerTitlePublication extends DefaultHandler {
 		if(qname.equalsIgnoreCase("pages") && bPubl) bPages = true;
 		if(qname.equalsIgnoreCase("year") && bPubl) bYear = true;
 		if(qname.equalsIgnoreCase("volume") && bPubl) bVolume = true;
-		if(qname.equalsIgnoreCase("journal") && bPubl) bJournal = true;
+		if((qname.equalsIgnoreCase("journal") | qname.equalsIgnoreCase("booktitle")) && bPubl) bJournal = true;
 		if(qname.equalsIgnoreCase("url") && bPubl) bUrl = true;	
 	}
 	 
@@ -308,9 +323,10 @@ class UserHandlerTitlePublication extends DefaultHandler {
 			 String[] splitTitle = gotTitle.split(" ");
 			 for(String i : this.queryTitle)
 			 {
+				 String other1 = i+"."; String other2 = i+":"; String other3 = i+",";
 				 for(String j : splitTitle)
 				 {
-					 if(i.equalsIgnoreCase(j))
+					 if(i.equalsIgnoreCase(j) | other1.equalsIgnoreCase(j) | other2.equalsIgnoreCase(j) | other3.equalsIgnoreCase(j))
 						 this.numberOfMatches += 1;
 				 }
 			 }

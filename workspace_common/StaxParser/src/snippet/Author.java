@@ -12,7 +12,13 @@ public class Author implements Comparable<Author>{
 	
 	//getters
 	int getNumOfPublications(){ return this.numOfPublications; }
-	String getName(){return this.names.iterator().next().toString(); }
+	String getName(){
+		String name = this.names.iterator().next().toString(); 
+		if(name != null)
+			return  name;
+		else
+			return "";
+	}
 	Set<String> getNames() { return this.names; } 
 	
 	void incrementPub(){this.numOfPublications += 1; }

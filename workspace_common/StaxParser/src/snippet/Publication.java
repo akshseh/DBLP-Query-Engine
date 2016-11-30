@@ -12,6 +12,11 @@ public class Publication {
 	
 	public Publication(){
 		authors = new ArrayList<Author>();
+		this.Title = "";
+		this.pages = "";
+		this.Journal = "";
+		this.URL = "";
+		this.volume = "";
 	}
 	
 	public Publication(String title){ 
