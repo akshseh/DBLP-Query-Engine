@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="DBLP : Query Engine">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>DBLP</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/aksh98/DBLP">View on GitHub</a>
+
+          <h1 id="project_title">DBLP</h1>
+          <h2 id="project_tagline">Query Engine</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/aksh98/DBLP/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/aksh98/DBLP/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="what-we-did-in-this-project" class="anchor" href="#what-we-did-in-this-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What we did in this Project</h2>
+
+<p>The DBLP computer science bibliography is the on-line reference for bibliographic information on major computer science publications. It has evolved from an early small experimental web server to a popular open-data service for the computer science community.
+In this project, we built a <strong>GUI search engine</strong> which retrieves required information from the DBLP offline dataset.</p>
+
+<p>The Dataset ( <em><a href="http://dblp.uni-trier.de/xml/">Available Here</a>.The zipped file is about 342MB. Huge file !!</em> O.O ) represents information about publications by different authors along with other information like the year of publication, the number of pages etc.
+The file is in <code>XML</code> format. <a href="http://dblp.uni-trier.de/faq/What+do+I+find+in+dblp+xml">This</a> is what it contains.</p>
+
+<p>In our project, the following <strong>Tasks</strong> were carried out:</p>
+
+<p><strong>Task1​ :</strong> Parse the <code>XML</code> file using appropriate parsing techniques.</p>
+
+<p><strong>Task2 ​:</strong> To retrieve and display the results of the given queries on this dataset.</p>
+
+<p><strong>Task3​:</strong> To create a GUI using Java swing libraries to input the query parameters to the program.</p>
+
+<p>And <strong>Functionalities</strong> implemented were :</p>
+
+<ol>
+<li>Display the result count along with the data.</li>
+<li>Perform Entity resolution. It simply means finding papers that belong to the same Author (entity) where the        author might have different names. For e.g. In research papers, sometimes an author uses his/her full name and sometimes his/her initials (or might have a different middle name). The task of entity resolution is to identify both to be the same author. During search, both the papers should be returned.</li>
+<li>If the data entered is invalid show appropriate message on the GUI itself.</li>
+<li>If no results are returned, display the message in the result box.</li>
+<li>Appropriate checks for values in the text boxes should be present in your
+implementation and user should be prompted for such values.</li>
+<li>Result box should display first 20 results and should give user an option
+(button) to see next 20 results and so on.</li>
+<li>If returned results are less than 20, then show only the returned results.</li>
+<li>Results are always sorted by date. (Latest ones first)</li>
+<li>Results for <em>Query1</em> should be in the following format:
+<code>&lt;s_no&gt;</code>, <code>&lt;authors&gt;</code>, <code>&lt;title&gt;</code>, <code>&lt;pages&gt;</code>, <code>&lt;year&gt;</code>, <code>&lt;volume&gt;</code>, <code>&lt;journal/Booktitle&gt;</code>,
+<code>&lt;url&gt;</code>
+</li>
+<li>Results for <em>Query2</em> should be just author names in a single column on a new
+line in the result box.</li>
+</ol>
+
+<p><strong>Queries:</strong></p>
+
+<ol>
+<li>
+<p><strong>Query1</strong>
+a. Find publications by a given author name.
+b. Find publications by title tags.
+Both the above queries have multiple options:</p>
+
+<ul>
+<li>Sorting by date (reverse)</li>
+<li>Sorting by relevance (matched words)</li>
+<li>Since some given year</li>
+<li>Inbetween two years</li>
+</ul>
+</li>
+<li><p><strong>Query2</strong>
+a. Find names of authors with more than <code>k</code> publications.</p></li>
+<li><p><strong>Query3</strong>
+​   Given a data upto a particular year, predict the number of papers an
+author publishes in the next year.</p></li>
+</ol>
+
+<h3>
+<a id="our-approach" class="anchor" href="#our-approach" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Our Approach</h3>
+
+<p>How we chose to do this project can be seen in our <a href="https://github.com/aksh98/DBLP/blob/master/ProjectReport%20(1).pdf">Project Report</a>. :)</p>
+
+<p>Also, just for reference we have some <a href="https://github.com/aksh98/DBLP/blob/master/screenshots.docx">Screenshots of our GUI here</a>.</p>
+
+<h3>
+<a id="project-contributions-by-" class="anchor" href="#project-contributions-by-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project contributions by :</h3>
+
+<ul>
+<li>Akarsha Sehwag(<a href="https://github.com/aksh98" class="user-mention">@aksh98</a>) </li>
+<li>Kushagra Arora(<a href="https://github.com/kushagra7589" class="user-mention">@kushagra7589</a>)</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">DBLP maintained by <a href="https://github.com/aksh98">aksh98</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
